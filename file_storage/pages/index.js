@@ -1,8 +1,24 @@
 import Head from 'next/head';
-import Main from './components/main/main.jsx';
+import Main from '../components/main/main.jsx';
 import styles from '../styles/Home.module.css';
 
-export default function Home() {
+export const getStaticProps = async () => {
+  const res = await fetch('http://localhost:3000/api/directory/');
+  const data = await res.json();
+
+  if (!data) {
+    return {
+      notFount: true,
+    }
+  }
+
+  return {
+    props: { dataTree: data },
+  };
+}
+
+export default function Home({ dataTree }) {
+
   return (
     <div className={styles.container}>
       <Head>
@@ -11,7 +27,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-    <Main />
+      <Main data={dataTree} />
 
     </div>
   )
