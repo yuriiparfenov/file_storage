@@ -1,0 +1,25 @@
+.container {
+    display: block;
+    width: 1000px;
+    height: 400px;
+    border: 1px solid black;
+    margin-top: 10vh;
+    background-color: #f7f7f7;
+}
+
+.header {
+    margin-left: 0px;
+    display: flex;
+}
+
+.header button {
+    margin-right: 10px;
+    border: none;
+    background-color: #f7f7f7;
+}
+
+.files {
+    margin-top: 5px;
+    display: flex;
+    height: 350px;
+}
