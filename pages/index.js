@@ -2,22 +2,18 @@ import Head from 'next/head';
 import Main from '../components/main/main.jsx';
 import styles from '../styles/Home.module.css';
 
-export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:3000/api/directory/');
-  const data = await res.json();
-
-  if (!data) {
-    return {
-      notFount: true,
-    }
-  }
+export const getServerSideProps = async (req, res) => {
+  const dir = await fetch('http://localhost:3000/api/read_directory');
+  const dirData = await dir.json();
 
   return {
-    props: { dataTree: data },
+    props: {
+      dirData
+    }
   };
-}
+};
 
-export default function Home({ dataTree }) {
+export default function Home({ dirData }) {
 
   return (
     <div className={styles.container}>
@@ -27,7 +23,7 @@ export default function Home({ dataTree }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Main data={dataTree} />
+      <Main data={dirData} />
 
     </div>
   )

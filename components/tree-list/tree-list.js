@@ -23,7 +23,6 @@ const TreeList = ({ data }) => {
         <section className={styles.list}>
             <DirectoryTree
                 multiple
-                defaultExpandAll
                 onSelect={onSelect}
                 onExpand={onExpand}
                 treeData={treeData}
