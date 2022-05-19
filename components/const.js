@@ -1,4 +1,4 @@
-export const Buttons = {
+export const ButtonsText = {
     createDir: 'Создать Папку',
     deleteDir: 'Удалить Папку',
     loadFile: 'Загрузить файл',

@@ -2,15 +2,13 @@
 const path = require("path");
 const fs = require("fs");
 
-
 const root = path.resolve(process.cwd(), 'pages/api/data');
 
 export default async function readDirHandler(req, res) {
+
   const queryPath = req.query.path || "";
   const readDir = path.resolve(root, queryPath); 
-
   try {
-
     const getList = async (dir) => {
       const data = await fs.readdirSync(dir);
 
@@ -25,12 +23,8 @@ export default async function readDirHandler(req, res) {
           isLeaf: extname ? true : false,
         }
       }))
-
       return response;
-
     }
-
-
     console.log(getList(readDir).then(file => console.log(file)));
     res.status(200).json(getList(readDir));
 

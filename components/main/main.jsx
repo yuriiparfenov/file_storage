@@ -2,27 +2,26 @@ import { useState } from 'react';
 import Upload from 'antd/lib/upload/Upload';
 import { useQuery } from 'react-query';
 
-import ButtonView from '../button/button-view';
-import { Buttons } from '../const';
-import TabsContainer from '../tabs-container/tabs-container';
-import TreeList from '../tree-list/tree-list';
-import CreateDirComponent from '../creat-dir-component/create-dir-component';
-import DeleteDirComponent from '../delete-dir-component/delete-dir-component';
+import Button from '../Button/Button';
+import { ButtonsText } from '../const';
+import TabsContainer from '../TabsComponent/TabsComponent';
+import TreeListContainer from '../TreeListComponent/TreeListContainer';
+import CreateDirComponent from '../CreateDirComponent/CreateDirComponent';
+import DeleteDirComponent from '../DeleteDirComponent/DeleteDirComponent';
 
 import styles from './main.module.css';
 
 const Main = () => {
-  const [dataState, setDataState] = useState();
+  const [target, setTarget] = useState(null);
 
-  const getDirData = async () => {
+  const getFolderDirectory = async () => {
     const response = await fetch(
       'http://localhost:3000/api/read_directory?path='
     );
     return response.json();
   };
 
-  //Запрос списка дирректории
-  const { isLoading, error, data } = useQuery('repoData', getDirData);
+  const { isLoading, error, data } = useQuery('repoData', getFolderDirectory);
 
   if (isLoading) return 'Loading...';
 
@@ -33,16 +32,15 @@ const Main = () => {
       <header className={styles.header}>
         <CreateDirComponent />
         <DeleteDirComponent />
-
         <Upload>
-          <ButtonView title={Buttons.loadFile} />
+          <Button title={ButtonsText.loadFile} />
         </Upload>
-        <ButtonView title={Buttons.saveFile} />
-        <ButtonView title={Buttons.deleteFile} />
-        <ButtonView title={Buttons.rename} />
+        <Button title={ButtonsText.saveFile} />
+        <Button title={ButtonsText.deleteFile} />
+        <Button title={ButtonsText.rename} />
       </header>
       <section className={styles.files}>
-        <TreeList dataTree={data} />
+        <TreeListContainer data={data} />
         <TabsContainer />
       </section>
     </main>
