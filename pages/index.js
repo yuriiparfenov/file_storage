@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtoolsPanel } from 'react-query/devtools'
 import Main from '../components/main/main.jsx';
 import styles from '../styles/Home.module.css';
@@ -20,7 +20,6 @@ const queryClient = new QueryClient();
 
 export default function Home() {
   
-
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>

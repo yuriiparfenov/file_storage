@@ -2,30 +2,40 @@ const path = require("path");
 const fs = require("fs");
 
 
-const root = path.resolve(process.cwd(), 'pages/api/data');
+const dataPath = 'pages/api/data';
+const rootPath = path.resolve(process.cwd(), dataPath);
 
-export default async function readDirHandler(req, res) {
-  const queryPath = req.query.path || "";
-  const readDir = path.resolve(root, queryPath);
+export default async function getAllDirHandler(req, res) {
+    const queryPath = req.query.path || "";
 
-  try {
-    const data = await fs.readdirSync(readDir);
+    try {
+        const response = await readAllDir(queryPath);
 
-    const response = data.map(item => {
-      const _path = path.resolve(queryPath, item);
-      const extname = path.extname(_path);
-    
-      return {
-        path: path.join('pages/api/data', item),
-        title: item,
-        extname: extname,
-        isLeaf: extname ? true : false,
-      }
-    });
-    
-    res.status(200).json(response);
-    
-  } catch (err) {
-    res.status(401); // произошла ошибка
-  }
+        res.status(200).json(response);
+    } catch (err) {
+        console.log(err);
+        res.status(401); // произошла ошибка
+    }
 };
+
+async function readAllDir(dir) {
+    const readPath = path.resolve(rootPath, dir);
+    const data = await fs.readdirSync(readPath);
+
+    const result = [];
+
+    for (let i = 0; i < data.length; i++) {
+        const name = data[i];
+        const extname = path.extname(name);
+
+        result.push({
+            title: name,
+            extname,
+            path: readPath,
+            isLeaf: extname ? true : false,
+            children: Boolean(extname) ? undefined : await readAllDir(name)
+        });
+    }
+
+    return result;
+}

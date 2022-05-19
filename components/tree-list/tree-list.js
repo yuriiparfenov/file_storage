@@ -15,7 +15,7 @@ const TreeList = ({ dataTree }) => {
 
     const fetchSubdir = async (title) => {
         const res = await fetch(
-            `http://localhost:3000/api/read_directory?path=${title}`);
+            `http://localhost:3000/api/mkdir${title}`);
         return res.json();
     };
 
@@ -42,14 +42,6 @@ const TreeList = ({ dataTree }) => {
                 onExpand={onExpand}
                 treeData={treeData}
             />
-            {data ? 
-                <DirectoryTree
-                multiple
-                onSelect={onSelect}
-                onExpand={onExpand}
-                treeData={data}
-            /> : <p>что то</p>
-            }
         </section>
 
     );

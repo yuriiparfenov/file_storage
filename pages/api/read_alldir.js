@@ -1,3 +1,4 @@
+/* Выгрузка одной дирректории
 const path = require("path");
 const fs = require("fs");
 
@@ -6,7 +7,7 @@ const root = path.resolve(process.cwd(), 'pages/api/data');
 
 export default async function readDirHandler(req, res) {
   const queryPath = req.query.path || "";
-  const readDir = path.resolve(root, queryPath); //ПУТЬ!!!
+  const readDir = path.resolve(root, queryPath); 
 
   try {
 
@@ -37,3 +38,4 @@ export default async function readDirHandler(req, res) {
     res.status(401); // произошла ошибка
   }
 };
+*/
