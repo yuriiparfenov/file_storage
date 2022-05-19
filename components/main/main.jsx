@@ -1,12 +1,23 @@
 import Upload from 'antd/lib/upload/Upload';
-import { useEffect } from 'react/cjs/react.production.min';
+import { useQuery } from 'react-query';
 import ButtonView from '../button/button-view';
 import { Buttons } from '../const';
 import TabsContainer from '../tabs-container/tabs-container';
 import TreeList from '../tree-list/tree-list';
 import styles from './main.module.css';
 
-const Main = ({ data }) => {
+const Main = () => {
+  const { isLoading, error, data } = useQuery('repoData', () =>
+    fetch('http://localhost:3000/api/read_directory?path=').then((res) =>
+      res.json()
+    )
+  );
+  console.log(data);
+
+  if (isLoading) return 'Loading...';
+
+  if (error) return 'An error has occurred: ' + error.message;
+
   return (
     <main className={styles.container}>
       <header className={styles.header}>
