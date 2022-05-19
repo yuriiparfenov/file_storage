@@ -12,11 +12,11 @@ const Main = () => {
       res.json()
     )
   );
-  console.log(data);
 
   if (isLoading) return 'Loading...';
 
   if (error) return 'An error has occurred: ' + error.message;
+  
 
   return (
     <main className={styles.container}>
@@ -31,7 +31,7 @@ const Main = () => {
         <ButtonView title={Buttons.rename} />
       </header>
       <section className={styles.files}>
-        <TreeList data={data} />
+        <TreeList dataTree={data} />
         <TabsContainer />
       </section>
     </main>

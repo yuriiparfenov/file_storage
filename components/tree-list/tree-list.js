@@ -2,21 +2,36 @@ import React from 'react';
 import { memo } from 'react';
 import 'antd/dist/antd.css';
 import { Tree } from 'antd';
+import { useQuery } from 'react-query';
 import styles from './tree-list.module.css';
+import { useState } from 'react';
 
 const { DirectoryTree } = Tree;
 
 
-const TreeList = ({ data }) => {
-    
+const TreeList = ({ dataTree }) => {
+    const [title, setTitle] = useState('');
 
-    const treeData = data;
-    const onSelect = (keys) => {
-        console.log('Trigger Select', keys);
+
+    const fetchSubdir = async (title) => {
+        const res = await fetch(
+            `http://localhost:3000/api/read_directory?path=${title}`);
+        return res.json();
+    };
+
+
+    const { data, error, isLoading } = useQuery(['fetchSubdir', title], () =>
+        fetchSubdir(title)
+    );
+    console.log(data);
+
+    const treeData = dataTree;
+    const onSelect = (key, info) => {
+        setTitle(info.node.title);
     };
 
     const onExpand = () => {
-        console.log('Trigger Expand');
+
     };
 
     return (
@@ -27,6 +42,14 @@ const TreeList = ({ data }) => {
                 onExpand={onExpand}
                 treeData={treeData}
             />
+            {data ? 
+                <DirectoryTree
+                multiple
+                onSelect={onSelect}
+                onExpand={onExpand}
+                treeData={data}
+            /> : <p>что то</p>
+            }
         </section>
 
     );
