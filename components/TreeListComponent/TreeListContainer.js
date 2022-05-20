@@ -2,20 +2,19 @@ import React from 'react';
 import { memo } from 'react';
 import 'antd/dist/antd.css';
 import { Tree } from 'antd';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useState } from 'react';
 
 import styles from './tree-list.module.css';
+import axios from 'axios';
 
 const { DirectoryTree } = Tree;
 
-const TreeListContainer = ({ data }) => {
+const TreeListContainer = ({ data, onSetTarget }) => {
+    const [thisTarget, setThisTarget] = useState('');
 
     const onSelect = (key, info) => {
-
-    };
-
-    const onExpand = () => {
+        setThisTarget(`${info.node.title}`);
     };
 
     return (
@@ -23,11 +22,11 @@ const TreeListContainer = ({ data }) => {
             <DirectoryTree
                 multiple
                 onSelect={onSelect}
-                onExpand={onExpand}
                 treeData={data}
+                onClick={() => onSetTarget(thisTarget)}
             />
         </section>
     );
 };
 
-export default memo(TreeListContainer, (prevProps, nextProps) => prevProps !== nextProps);
+export default TreeListContainer;

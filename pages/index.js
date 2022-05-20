@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Main from '../components/main/main.jsx';
+import Main from '../components/Main/Main.jsx';
 import styles from '../styles/Home.module.css';
 
 const Home = () => {

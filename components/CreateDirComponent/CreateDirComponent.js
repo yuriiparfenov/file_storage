@@ -1,18 +1,20 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import axios from 'axios';
 
 import Button from '../Button/Button';
 import { ButtonsText } from '../const';
 
-const CreateDirComponent = () => {
+const CreateDirComponent = ({ targetPath }) => {
 
-  const { mutate } = useMutation((dir) =>
-    axios.post('http://localhost:3000/api/mkdir', dir));
+  const { mutate } = useMutation((targetPath) =>
+    axios.post('http://localhost:3000/api/mkdir', targetPath));
 
   const creatDirNameHandler = () => {
     const newDirName = prompt('Введите название новой папки', 'Новая папка');
     mutate({
       title: newDirName,
+      targetPath: targetPath,
+      isDirectory: true,
       isLeaf: false,
       children: [],
     });

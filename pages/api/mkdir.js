@@ -5,9 +5,10 @@ const dataPath = 'pages/api/data';
 
 export default async function createDirHandler(req, res) {
   try {
-    const { title } = await req.body;
+    console.log(req.body);
+    const { title, targetPath } = await req.body;
 
-    fs.mkdir(path.join(dataPath, title), (err) => {
+    fs.mkdir(path.join(dataPath, targetPath, title), (err) => {
       if (err) {
         return console.error(err);
       }
