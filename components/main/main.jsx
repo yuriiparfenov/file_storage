@@ -15,7 +15,6 @@ import styles from './main.module.css';
 
 const Main = () => {
   const queryClient = useQueryClient();
-  const queryCache = new QueryCache();
 
   const [target, setTarget] = useState({});
   const [fileTarget, setFileTarget] = useState();
@@ -56,11 +55,14 @@ const Main = () => {
 */
   const { mutate: deleteDirHandle } = useMutation((target) =>
     axios.post('http://localhost:3000/api/delete_dir', target),
+    {
+      onSuccess: queryClient.refetchQueries('repoData')
+    }
   );
 
   const deleteTargetDirHandle = async () => {
     await deleteDirHandle({ targetPath: target });
-    alert(`Папка удалена!`);
+    //alert(`Папка удалена!`);
   };
 
   const { mutate: renameDirHandle } = useMutation(
