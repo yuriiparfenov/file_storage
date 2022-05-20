@@ -8,11 +8,12 @@ import TabsContainer from '../TabsComponent/TabsComponent';
 import TreeListContainer from '../TreeListComponent/TreeListContainer';
 import CreateDirComponent from '../CreateDirComponent/CreateDirComponent';
 import DeleteDirComponent from '../DeleteDirComponent/DeleteDirComponent';
+import RenameDirComponent from '../RenameDirComponent/RenameDirComponent';
 
 import styles from './main.module.css';
 
 const Main = () => {
-  const [target, setTarget] = useState('');
+  const [target, setTarget] = useState({});
 
   const getFolderDirectory = async () => {
     const response = await fetch(
@@ -35,19 +36,18 @@ const Main = () => {
     <main className={styles.container}>
       <header className={styles.header}>
         <CreateDirComponent targetPath={target}/>
-        <DeleteDirComponent />
+        <DeleteDirComponent targetPath={target}/>
         <Upload>
-          <Button title={ButtonsText.loadFile} />
+          <Button title={ButtonsText.loadFile} disabled />
         </Upload>
-        <Button title={ButtonsText.saveFile} />
-        <Button title={ButtonsText.deleteFile} />
-        <Button title={ButtonsText.rename} />
+        <Button title={ButtonsText.saveFile} disabled />
+        <Button title={ButtonsText.deleteFile} disabled />
+        <RenameDirComponent targetPath={target}/>
       </header>
       <section className={styles.files}>
         <TreeListContainer data={data} onSetTarget={setTargetHandle} />
         <TabsContainer />
       </section>
-      
     </main>
   );
 };

@@ -3,12 +3,19 @@ const path = require('path');
 
 const dataPath = 'pages/api/data';
 
+
 export default async function createDirHandler(req, res) {
   try {
-    console.log(req.body);
-    const { title, targetPath } = await req.body;
+    let targetPropPath = '';
+    const { title, targetPath:{ parentPath, parentLeaf} } = await req.body;
 
-    fs.mkdir(path.join(dataPath, targetPath, title), (err) => {
+    if(!parentLeaf) {
+      targetPropPath = parentPath;
+    };
+
+    const rootPath = path.resolve(process.cwd(), dataPath, targetPropPath);
+
+    fs.mkdir(path.join(rootPath, title), (err) => {
       if (err) {
         return console.error(err);
       }

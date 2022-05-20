@@ -1,31 +1,23 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, queryClient } from 'react-query';
 import axios from 'axios';
 
 import Button from '../Button/Button';
 import { ButtonsText } from '../const';
 
 
-const DeleteDirComponent = () => {
+const DeleteDirComponent = ({ targetPath }) => {
 
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation((item) =>
-    axios.post('http://localhost:3000/api/mkdir', item), {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries('repoData');
-        queryClient.setQueryData(['repoData', item], data);
-      }
+  const { mutate } = useMutation((targetPath) =>
+    axios.post('http://localhost:3000/api/delete_dir', targetPath),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries();
+      },
     }
   );
-  if (mutation.isSuccess) console.log('Dir delete success');
-  if (mutation.isError) console.log(mutation.error);
 
   const deleteDirHandler = () => {
-    mutation.mutate({
-      title: name,
-      isLeaf: false,
-      children: [],
-    });
+    mutate({targetPath});
   };
 
   return (
