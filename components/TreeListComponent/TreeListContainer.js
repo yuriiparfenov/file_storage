@@ -7,7 +7,6 @@ import styles from './tree-list.module.css';
 const { DirectoryTree } = Tree;
 
 const TreeListContainer = ({ data, onSetTarget, onSetFileTarget }) => {
-
     return (
         <section className={styles.list}>
             <DirectoryTree

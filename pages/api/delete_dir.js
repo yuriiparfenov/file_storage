@@ -22,6 +22,6 @@ export default async function deleteDirHandler(req, res) {
 
   } catch (err) {
     console.log(err);
-    res.status(401); // произошла ошибка
+    res.status(401).json(); // произошла ошибка
   }
 }

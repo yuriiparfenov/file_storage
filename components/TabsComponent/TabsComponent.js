@@ -6,7 +6,7 @@ import { useMutation, useQuery } from 'react-query';
 
 const { TabPane } = Tabs;
 
-const TabsComponent = ({ target }) => {
+const TabsComponent = ({ data }) => {
 /*
     const { isLoading, error, data } = useQuery('file_read', (target) => {
         fetch('http://localhost:3000/api/read_file', target)

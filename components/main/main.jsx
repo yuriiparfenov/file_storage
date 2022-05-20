@@ -59,9 +59,8 @@ const Main = () => {
     setChangesFlag(!changesFlag);
   };
 
-
-  const { mutate: renameDirHandle } = useMutation((target) =>
-    axios.post('http://localhost:3000/api/rename_dir', target),
+  const { mutate: renameDirHandle } = useMutation(
+    (target) => axios.post('http://localhost:3000/api/rename_dir', target),
     {
       onSuccess: () => {
         queryClient.invalidateQueries();
@@ -75,6 +74,12 @@ const Main = () => {
     await refetchAsync;
     setChangesFlag(!changesFlag);
   };
+
+  const { isLoading: isLoadingFile, error: fileError, data: fileData } = useQuery(['file_read', target], () => {
+    axios.post('http://localhost:3000/api/read_file', target)
+  });
+
+  console.log(fileData);
 
   if (isLoading) return 'Loading...';
 
