@@ -5,20 +5,17 @@ const dataPath = 'pages/api/data';
 
 export default async function deleteDirHandler(req, res) {
   try {
-    const { title, targetPath:{ parentPath } } = await req.body;
+    const { targetPath:{ parentPath } } = await req.body;
 
     const rootPath = path.resolve(process.cwd(), dataPath, parentPath);
     
-    fs.rmdir(rootPath, (err) => {
+    await fs.rmdir(rootPath, { recursive: true }, (err) => {
       if (err) {
         return console.error(err);
       }
       console.log('Directory delete successfully!');
+      return res.status(200).json();
     })
-
-    if (title) {
-      return res.status(200).json({ message: `Дирректория удалена` });
-    }
 
   } catch (err) {
     console.log(err);
