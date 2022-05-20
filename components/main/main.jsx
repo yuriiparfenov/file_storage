@@ -16,6 +16,7 @@ import styles from './main.module.css';
 const Main = () => {
   const [target, setTarget] = useState({});
   const [fileTarget, setFileTarget] = useState();
+  const [changesFlag, setChangesFlag] = useState(false);
 
   const getFolderDirectory = async () => {
     const response = await fetch('http://localhost:3000/api/read_directory');
@@ -45,6 +46,7 @@ const Main = () => {
       children: [],
     });
     await refetchAsync;
+    setChangesFlag(!changesFlag);
   };
 
   const { mutate: deleteDirHandle } = useMutation((target) =>
@@ -54,6 +56,7 @@ const Main = () => {
   const deleteTargetDirHandle = async () => {
     await deleteDirHandle({ targetPath: target });
     await refetchAsync;
+    setChangesFlag(!changesFlag);
   };
 
 
@@ -70,6 +73,7 @@ const Main = () => {
     const newName = prompt('Введите новоe имя', 'Новая папка');
     await renameDirHandle({ title: newName, targetPath: target });
     await refetchAsync;
+    setChangesFlag(!changesFlag);
   };
 
   if (isLoading) return 'Loading...';
