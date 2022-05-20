@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Upload from 'antd/lib/upload/Upload';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient, QueryCache } from 'react-query';
 import axios from 'axios';
 
 import Button from '../Button/Button';
@@ -14,16 +14,18 @@ import RenameDirComponent from '../RenameDirComponent/RenameDirComponent';
 import styles from './main.module.css';
 
 const Main = () => {
+  const queryClient = useQueryClient();
+  const queryCache = new QueryCache();
+
   const [target, setTarget] = useState({});
   const [fileTarget, setFileTarget] = useState();
-  const [changesFlag, setChangesFlag] = useState(false);
 
   const getFolderDirectory = async () => {
     const response = await fetch('http://localhost:3000/api/read_directory');
     return response.json();
   };
 
-  const { isLoading, error, data, refetchAsync } = useQuery(
+  const { isLoading, error, data } = useQuery(
     'repoData',
     getFolderDirectory,
     {
@@ -31,9 +33,14 @@ const Main = () => {
       isRefetching: true,
     }
   );
-
+/*
   const { mutate: createDirHandle } = useMutation((target) =>
-    axios.post('http://localhost:3000/api/mkdir', target)
+    axios.post('http://localhost:3000/api/mkdir', target),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries();
+      },
+    }
   );
 
   const creatNewDirHandle = async () => {
@@ -45,25 +52,22 @@ const Main = () => {
       isLeaf: false,
       children: [],
     });
-    await refetchAsync;
-    setChangesFlag(!changesFlag);
   };
-
+*/
   const { mutate: deleteDirHandle } = useMutation((target) =>
-    axios.post('http://localhost:3000/api/delete_dir', target)
+    axios.post('http://localhost:3000/api/delete_dir', target),
   );
 
   const deleteTargetDirHandle = async () => {
     await deleteDirHandle({ targetPath: target });
-    await refetchAsync;
-    setChangesFlag(!changesFlag);
+    alert(`Папка удалена!`);
   };
 
   const { mutate: renameDirHandle } = useMutation(
     (target) => axios.post('http://localhost:3000/api/rename_dir', target),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries();
+      onSuccess: (data) => {
+        queryClient.queryClient.setQueryData('repoData', data);
       },
     }
   );
@@ -71,15 +75,18 @@ const Main = () => {
   const renameClickDirHandler = async () => {
     const newName = prompt('Введите новоe имя', 'Новая папка');
     await renameDirHandle({ title: newName, targetPath: target });
-    await refetchAsync;
-    setChangesFlag(!changesFlag);
   };
-
+/*
   const { isLoading: isLoadingFile, error: fileError, data: fileData } = useQuery(['file_read', target], () => {
-    axios.post('http://localhost:3000/api/read_file', target)
+    axios.post('http://localhost:3000/api/read_file', target),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries();
+      },
+    }
   });
 
-  console.log(fileData);
+  console.log(fileData);*/
 
   if (isLoading) return 'Loading...';
 
@@ -96,7 +103,7 @@ const Main = () => {
   return (
     <main className={styles.container}>
       <header className={styles.header}>
-        <CreateDirComponent onClick={creatNewDirHandle} />
+        {/*<CreateDirComponent onClick={creatNewDirHandle} />*/}
         <DeleteDirComponent onClick={deleteTargetDirHandle} />
         <Upload>
           <Button title={ButtonsText.loadFile} disabled />
