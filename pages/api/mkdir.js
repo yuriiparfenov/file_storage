@@ -3,7 +3,6 @@ const path = require('path');
 
 const dataPath = 'pages/api/data';
 
-
 export default async function createDirHandler(req, res) {
   try {
     let targetPropPath = '';
@@ -25,7 +24,6 @@ export default async function createDirHandler(req, res) {
     if (title) {
       return res.status(200).json({ message: `Создана дирректория ${title}` });
     }
-
   } catch (err) {
     console.log(err);
     res.status(401); // произошла ошибка

@@ -6,7 +6,6 @@ const dataPath = 'pages/api/data';
 export default async function deleteDirHandler(req, res) {
   try {
     const { targetPath:{ parentPath } } = await req.body;
-
     const rootPath = path.resolve(process.cwd(), dataPath, parentPath);
     
     await fs.rmdir(rootPath, { recursive: true }, (err) => {

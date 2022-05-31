@@ -6,7 +6,6 @@ const dataPath = 'pages/api/data';
 export default async function deleteDirHandler(req, res) {
   try {
     const { title, targetPath: { parentPath } } = await req.body;
-    
     const rootPath = path.resolve(process.cwd(), dataPath, parentPath);
     const newPath = path.join(dataPath, title);
 

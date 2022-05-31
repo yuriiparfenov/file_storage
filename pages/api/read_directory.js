@@ -9,7 +9,6 @@ export default async function getAllDirHandler(req, res) {
 
     try {
         const response = await readAllDir(queryPath, rootPath);
-
         res.status(200).json(response);
     } catch (err) {
         console.log(err);
@@ -19,7 +18,6 @@ export default async function getAllDirHandler(req, res) {
 
 async function readAllDir(name_path, full_path) {
     const data = await fs.readdirSync(full_path);
-
     const response = [];
 
     for (let i = 0; i < data.length; i++) {
@@ -39,6 +37,5 @@ async function readAllDir(name_path, full_path) {
             children: isDirectory ? await readAllDir(_name_path, _full_path) : undefined
         });
     }
-
     return response;
 }
